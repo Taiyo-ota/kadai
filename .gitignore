@@ -1,1 +1,14 @@
 /build/
+# Eclipse関連
+.classpath
+.project
+.settings/
+
+# ビルド出力
+/target/
+/bin/
+/build/
+
+# ローカル設定・環境変数
+application-local.properties
+.env
