@@ -1,4 +1,4 @@
-package com.example.calender;
+package com.example.calendar;
 
 public class Test {
 
