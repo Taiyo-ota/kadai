@@ -1,10 +1,102 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>メイン画面</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スケジュール・収支管理</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
+<header>
+    <h1>スケジュール・収支管理アプリ</h1>
+    <nav>
+        <a th:href="@{/main}">ホーム</a>
+        <a th:href="@{/schedule/new}">予定を登録</a>
+        <a th:href="@{/income-expense/new}">収支を登録</a>
+        <a th:href="@{/records}">編集・削除</a>
+        <button id="logoutButton" type="button">ログアウト</button>
+    </nav>
+</header>
 
+<main>
+    <section class="card">
+        <h2>今月の収支</h2>
+        <div class="summary">
+            <div class="summary-item">
+                <strong>収入</strong>
+                <p th:text="${incomeTotal != null ? #numbers.formatInteger(incomeTotal, 1, 'COMMA') + '円' : '0円'}">0円</p>
+            </div>
+            <div class="summary-item">
+                <strong>支出</strong>
+                <p th:text="${expenseTotal != null ? #numbers.formatInteger(expenseTotal, 1, 'COMMA') + '円' : '0円'}">0円</p>
+            </div>
+            <div class="summary-item">
+                <strong>収支合計</strong>
+                <p th:text="${balance != null ? #numbers.formatInteger(balance, 1, 'COMMA') + '円' : '0円'}">0円</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="calendar-controls">
+            <button id="prevMonth" type="button">前の月</button>
+            <h2 id="monthLabel">カレンダー</h2>
+            <button id="nextMonth" type="button">次の月</button>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid">
+            <div class="calendar-day heading">日</div>
+            <div class="calendar-day heading">月</div>
+            <div class="calendar-day heading">火</div>
+            <div class="calendar-day heading">水</div>
+            <div class="calendar-day heading">木</div>
+            <div class="calendar-day heading">金</div>
+            <div class="calendar-day heading">土</div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>予定一覧</h2>
+        <label for="genreFilter">ジャンルで絞り込み</label>
+        <select id="genreFilter">
+            <option value="all">すべて</option>
+            <option value="学校">学校</option>
+            <option value="アルバイト">アルバイト</option>
+            <option value="プライベート">プライベート</option>
+        </select>
+
+        <div class="table-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th>日付</th>
+                    <th>予定名</th>
+                    <th>ジャンル</th>
+                    <th>時間</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="schedule : ${schedules}"
+                    th:attr="data-genre=${schedule.genre}">
+                    <td th:text="${schedule.date}">2026-10-20</td>
+                    <td th:text="${schedule.title}">授業</td>
+                    <td th:text="${schedule.genre}">学校</td>
+                    <td>
+                        <span th:text="${schedule.startTime}">09:00</span>
+                        -
+                        <span th:text="${schedule.endTime}">10:30</span>
+                    </td>
+                </tr>
+                <tr th:if="${schedules == null or #lists.isEmpty(schedules)}">
+                    <td colspan="4">登録された予定はありません。</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>

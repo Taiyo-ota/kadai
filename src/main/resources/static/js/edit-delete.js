@@ -1,0 +1,47 @@
+/**
+ * 
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    const deleteButtons = document.querySelectorAll(".deleteButton");
+
+    deleteButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const confirmed = confirm(
+                "この予定・収支記録を削除してもよろしいですか？"
+            );
+
+            if (!confirmed) {
+                event.preventDefault();
+            }
+
+            // 削除を確定した場合の実際の処理は
+            // Spring Boot側で実装してください。
+        });
+    });
+
+    const editForm = document.getElementById("editForm");
+
+    if (editForm) {
+        editForm.addEventListener("submit", (event) => {
+            const title = document.getElementById("title");
+            const amount = document.getElementById("amount");
+
+            if (title && !title.value.trim()) {
+                event.preventDefault();
+                alert("予定名または項目名を入力してください。");
+                return;
+            }
+
+            if (amount && amount.value.trim() !== "") {
+                const value = Number(amount.value);
+
+                if (!Number.isFinite(value) || value < 0) {
+                    event.preventDefault();
+                    alert("金額は0以上の数字を入力してください。");
+                }
+            }
+
+            // 実際の更新処理はSpring Boot側で実装します。
+        });
+    }
+});

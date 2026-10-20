@@ -1,0 +1,134 @@
+
+/* 入力画面 */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.required {
+    color: #d9534f;
+    font-size: 12px;
+}
+
+input[type="color"] {
+    width: 70px;
+    height: 42px;
+    padding: 3px;
+}
+
+/* カレンダー */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 4px;
+    margin-top: 16px;
+}
+
+.calendar-day {
+    min-height: 70px;
+    padding: 8px 4px;
+    background: #f5f7fb;
+    border-radius: 5px;
+    overflow-wrap: anywhere;
+}
+
+.calendar-day.heading {
+    min-height: auto;
+    text-align: center;
+    font-weight: bold;
+    background: #edf2ff;
+}
+
+/* 表の横スクロール */
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.inline-form button {
+    margin: 4px 0;
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-day {
+        min-height: 48px;
+        padding: 5px 2px;
+        font-size: 12px;
+    }
+}
+
+/* 入力画面 */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.required {
+    color: #d9534f;
+    font-size: 12px;
+}
+
+input[type="color"] {
+    width: 70px;
+    height: 42px;
+    padding: 3px;
+}
+
+/* カレンダー */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 4px;
+    margin-top: 16px;
+}
+
+.calendar-day {
+    min-height: 70px;
+    padding: 8px 4px;
+    background: #f5f7fb;
+    border-radius: 5px;
+    overflow-wrap: anywhere;
+}
+
+.calendar-day.heading {
+    min-height: auto;
+    text-align: center;
+    font-weight: bold;
+    background: #edf2ff;
+}
+
+/* 表の横スクロール */
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.inline-form button {
+    margin: 4px 0;
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-day {
+        min-height: 48px;
+        padding: 5px 2px;
+        font-size: 12px;
+    }
+}

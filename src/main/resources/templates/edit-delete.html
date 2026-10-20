@@ -1,10 +1,119 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>編集・削除</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予定・収支の編集と削除</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
+<header>
+    <h1>予定・収支の編集と削除</h1>
+    <nav>
+        <a th:href="@{/main}">ホーム</a>
+        <a th:href="@{/schedule/new}">予定を登録</a>
+        <a th:href="@{/income-expense/new}">収支を登録</a>
+        <a th:href="@{/records}">編集・削除</a>
+    </nav>
+</header>
 
+<main>
+    <section class="card">
+        <h2>登録した予定</h2>
+
+        <div class="table-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th>日付</th>
+                    <th>予定名</th>
+                    <th>ジャンル</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="schedule : ${schedules}">
+                    <td th:text="${schedule.date}">2026-10-20</td>
+                    <td th:text="${schedule.title}">学校の授業</td>
+                    <td th:text="${schedule.genre}">学校</td>
+                    <td>
+                        <a class="button"
+                           th:href="@{/schedule/edit/{id}(id=${schedule.id})}">
+                            編集
+                        </a>
+
+                        <form class="inline-form"
+                              th:action="@{/schedule/delete/{id}(id=${schedule.id})}"
+                              method="post">
+                            <button class="button-danger deleteButton"
+                                    type="submit">
+                                削除
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${schedules == null or #lists.isEmpty(schedules)}">
+                    <td colspan="4">登録された予定はありません。</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>登録した収支</h2>
+
+        <div class="table-scroll">
+            <table>
+                <thead>
+                <tr>
+                    <th>日付</th>
+                    <th>区分</th>
+                    <th>項目</th>
+                    <th>金額</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="record : ${incomeExpenses}">
+                    <td th:text="${record.date}">2026-10-20</td>
+                    <td th:text="${record.type == 'income' ? '収入' : '支出'}">
+                        収入
+                    </td>
+                    <td th:text="${record.category}">アルバイト代</td>
+                    <td th:text="${#numbers.formatInteger(record.amount, 1, 'COMMA')} + '円'">
+                        5,000円
+                    </td>
+                    <td>
+                        <a class="button"
+                           th:href="@{/income-expense/edit/{id}(id=${record.id})}">
+                            編集
+                        </a>
+
+                        <form class="inline-form"
+                              th:action="@{/income-expense/delete/{id}(id=${record.id})}"
+                              method="post">
+                            <button class="button-danger deleteButton"
+                                    type="submit">
+                                削除
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${incomeExpenses == null or #lists.isEmpty(incomeExpenses)}">
+                    <td colspan="5">登録された収支はありません。</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="form-actions">
+        <a class="button button-secondary" th:href="@{/main}">メイン画面に戻る</a>
+    </div>
+</main>
+
+<script th:src="@{/js/edit-delete.js}"></script>
 </body>
 </html>
