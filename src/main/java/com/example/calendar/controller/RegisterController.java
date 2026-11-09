@@ -23,4 +23,10 @@ public class RegisterController {
 	public String initialSettingsComplete() {
 		return "redirect:/main";
 	}
+
+	// 初期設定画面を表示する
+	@GetMapping("/initial-settings")
+	public String initialSettings() {
+		return "initial-settings";
+	}
 }
