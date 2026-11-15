@@ -13,10 +13,10 @@
 	</parent>
 
 	<groupId>com.example</groupId>
-	<artifactId>calender</artifactId>
+	<artifactId>calendar</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>calender</name>
+	<name>calendar</name>
 	<description>スケジュール・収支管理アプリ</description>
 
 	<properties>
