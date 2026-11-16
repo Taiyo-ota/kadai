@@ -1,0 +1,62 @@
+package com.example.calendar.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.calendar.entity.User;
+import com.example.calendar.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class LoginController {
+
+	// ユーザー情報を操作するService
+	private final UserService userService;
+
+	// ログイン画面を表示する
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+
+	// ログイン処理
+	@PostMapping("/login")
+	public String login(
+			@RequestParam("email") String email,
+			@RequestParam("password") String password,
+			HttpSession session,
+			Model model) {
+
+		// ログイン認証を行う
+		User user = userService.authenticate(email, password).orElse(null);
+
+		// 認証に失敗した場合
+		if (user == null) {
+			model.addAttribute("loginError", "メールアドレスまたはパスワードが違います");
+			return "login";
+		}
+
+		// ログイン情報をセッションに保存する
+		session.setAttribute("userId", user.getId());
+		session.setAttribute("userName", user.getName());
+
+		// ログイン成功後はメイン画面へ移動する
+		return "redirect:/main";
+	}
+
+	// ログアウト処理
+	@PostMapping("/logout")
+	public String logout(HttpSession session) {
+
+		// セッションを破棄する
+		session.invalidate();
+
+		return "redirect:/login";
+	}
+}
