@@ -1,108 +1,117 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>スケジュール・収支管理</title>
-	<link rel="stylesheet" th:href="@{/css/app.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カレンダー＆家計簿 - メイン画面</title>
+    <!-- CSSは後で作成するものを読み込み -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-
 <body>
-	<header>
-		<h1>スケジュール・収支管理アプリ</h1>
-		<nav>
-			<a th:href="@{/main}">ホーム</a>
-			<a th:href="@{/schedule/new}">予定を登録</a>
-			<a th:href="@{/income-expense/new}">収支を登録</a>
-			<a th:href="@{/records}">編集・削除</a>
-			<form th:action="@{/logout}" method="post" id="logoutForm">
-				<button id="logoutButton" type="submit">ログアウト</button>
-			</form>
-		</nav>
-	</header>
+    <header>
+        <h1>カレンダー＆家計簿</h1>
+    </header>
 
-	<main>
-		<section class="card">
-			<h2>今月の収支</h2>
-			<div class="summary">
-				<div class="summary-item">
-					<strong>収入</strong>
-					<p th:text="${incomeTotal != null ? #numbers.formatInteger(incomeTotal, 1, 'COMMA') + '円' : '0円'}">
-						0円</p>
-				</div>
-				<div class="summary-item">
-					<strong>支出</strong>
-					<p
-						th:text="${expenseTotal != null ? #numbers.formatInteger(expenseTotal, 1, 'COMMA') + '円' : '0円'}">
-						0円</p>
-				</div>
-				<div class="summary-item">
-					<strong>収支合計</strong>
-					<p th:text="${balance != null ? #numbers.formatInteger(balance, 1, 'COMMA') + '円' : '0円'}">0円</p>
-				</div>
-			</div>
-		</section>
+    <main class="container">
+        <!-- 1. 今月の収支表示エリア -->
+        <section class="summary-cards">
+            <div class="card income">
+                <h3>今月の収入</h3>
+                <p id="total-income">¥0</p>
+            </div>
+            <div class="card expense">
+                <h3>今月の支出</h3>
+                <p id="total-expense">¥0</p>
+            </div>
+            <div class="card balance">
+                <h3>今月の収支差額</h3>
+                <p id="total-balance">¥0</p>
+            </div>
+        </section>
 
-		<section class="card">
-			<div class="calendar-controls">
-				<button id="prevMonth" type="button">前の月</button>
-				<h2 id="monthLabel">カレンダー</h2>
-				<button id="nextMonth" type="button">次の月</button>
-			</div>
+        <!-- 2. 表示モード切替タブ（すべて / 予定 / 収支） -->
+        <section class="filter-tabs">
+            <button type="button" class="tab-btn active" onclick="filterItems('ALL')">すべて</button>
+            <button type="button" class="tab-btn" onclick="filterItems('SCHEDULE')">予定</button>
+            <button type="button" class="tab-btn" onclick="filterItems('FINANCE')">収支</button>
+        </section>
 
-			<div class="calendar-grid" id="calendarGrid">
-				<div class="calendar-day heading">日</div>
-				<div class="calendar-day heading">月</div>
-				<div class="calendar-day heading">火</div>
-				<div class="calendar-day heading">水</div>
-				<div class="calendar-day heading">木</div>
-				<div class="calendar-day heading">金</div>
-				<div class="calendar-day heading">土</div>
-			</div>
-		</section>
+        <div class="main-grid">
+            <!-- 3. カレンダー＆登録済みデータ一覧 -->
+            <section class="calendar-area">
+                <div class="calendar-header">
+                    <h2 id="current-month">2026年 11月</h2>
+                    <div>
+                        <button type="button" id="prev-month">&lt;</button>
+                        <button type="button" id="next-month">&gt;</button>
+                    </div>
+                </div>
+                
+                <!-- JSでカレンダーグリッドを描画する領域 -->
+                <div id="calendar-grid" class="calendar-grid"></div>
 
-		<section class="card">
-			<h2>予定一覧</h2>
-			<label for="genreFilter">ジャンルで絞り込み</label>
-			<select id="genreFilter">
-				<option value="all">すべて</option>
-				<option value="学校">学校</option>
-				<option value="アルバイト">アルバイト</option>
-				<option value="プライベート">プライベート</option>
-			</select>
+                <!-- 登録データ一覧（動作確認・編集遷移用） -->
+                <h3>登録済みの予定・収支一覧</h3>
+                <ul id="item-list" class="item-list">
+                    <li th:each="item : ${items}" 
+                        th:data-type="${item.type}"
+                        th:style="'border-left: 5px solid ' + ${item.color}">
+                        <span th:text="${item.date}">2026-11-16</span>
+                        <span th:text="${item.genre}">[ジャンル]</span>
+                        <strong th:text="${item.title}">タイトル</strong>
+                        <span th:if="${item.amount != null}" th:text="'¥' + ${item.amount}">¥1000</span>
+                        
+                        <!-- 編集画面へのリンク -->
+                        <a th:href="@{/calendar/edit/{id}(id=${item.id})}" class="btn-edit">編集・削除</a>
+                    </li>
+                </ul>
+            </section>
 
-			<div class="table-scroll">
-				<table>
-					<thead>
-						<tr>
-							<th>日付</th>
-							<th>予定名</th>
-							<th>ジャンル</th>
-							<th>時間</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="schedule : ${schedules}" th:attr="data-genre=${schedule.genre}">
-							<td th:text="${schedule.date}">2026-10-20</td>
-							<td th:text="${schedule.title}">授業</td>
-							<td th:text="${schedule.genre}">学校</td>
-							<td>
-								<span th:text="${schedule.startTime}">09:00</span>
-								-
-								<span th:text="${schedule.endTime}">10:30</span>
-							</td>
-						</tr>
-						<tr th:if="${schedules == null or #lists.isEmpty(schedules)}">
-							<td colspan="4">登録された予定はありません。</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</section>
-	</main>
+            <!-- 4. 予定・収支の新規登録フォーム -->
+            <section class="input-area">
+                <h2>予定・収支の記録</h2>
+                <form th:action="@{/calendar/save}" th:object="${calendarForm}" method="post">
+                    <div class="form-group">
+                        <label>種別</label>
+                        <select th:field="*{type}" id="type-select" onchange="toggleAmountField()" required>
+                            <option value="SCHEDULE">予定</option>
+                            <option value="INCOME">収入</option>
+                            <option value="EXPENSE">支出</option>
+                        </select>
+                    </div>
 
-	<script th:src="@{/js/main.js}"></script>
+                    <div class="form-group">
+                        <label>日付</label>
+                        <input type="date" th:field="*{date}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>タイトル・内容</label>
+                        <input type="text" th:field="*{title}" placeholder="例：アルバイト、ランチ代" required>
+                    </div>
+
+                    <div class="form-group" id="amount-group" style="display: none;">
+                        <label>金額（円）</label>
+                        <input type="number" th:field="*{amount}" placeholder="例：1000">
+                    </div>
+
+                    <div class="form-group">
+                        <label>ジャンル</label>
+                        <input type="text" th:field="*{genre}" placeholder="例：仕事、食費、プライベート">
+                    </div>
+
+                    <div class="form-group">
+                        <label>メモ</label>
+                        <textarea th:field="*{memo}" rows="2"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">登録する</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <!-- JSは後で作成するものを読み込み -->
+    <script th:src="@{/js/main.js}"></script>
 </body>
-
 </html>
