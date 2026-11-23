@@ -9,17 +9,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SignupForm {
+	//users
 
+	private String id;
+	// ユーザー名
+	@NotBlank(message = "名前を入力してください")
+	@Size(max = 50, message = "名前は50文字以内で入力してください")
+	private String name;
 	// メールアドレス
 	@NotBlank(message = "メールアドレスを入力してください")
 	@Email(message = "正しいメールアドレスを入力してください")
 	@Size(max = 255, message = "メールアドレスは255文字以内で入力してください")
 	private String email;
-
-	// ユーザー名
-	@NotBlank(message = "名前を入力してください")
-	@Size(max = 50, message = "名前は50文字以内で入力してください")
-	private String name;
 
 	// パスワード
 	@NotBlank(message = "パスワードを入力してください")

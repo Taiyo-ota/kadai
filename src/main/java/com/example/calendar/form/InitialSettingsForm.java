@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InitialSettingsForm {
-
+//Categories
 	// ジャンル・色の一覧
 	@Valid
 	private List<CategoryForm> categories = new ArrayList<>();
@@ -21,7 +21,9 @@ public class InitialSettingsForm {
 	@Getter
 	@Setter
 	public static class CategoryForm {
-
+		private String id;
+		
+		
 		// ジャンル名
 		@NotBlank(message = "ジャンル名を入力してください")
 		@Size(max = 50, message = "ジャンル名は50文字以内で入力してください")
