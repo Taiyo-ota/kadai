@@ -1,0 +1,267 @@
+@charset "UTF-8";
+/* 基本設定 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #ffffff;
+    padding: 15px 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 1.4rem;
+    color: #1e293b;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+}
+
+/* 1. 収支サマリーカード */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.card h3 {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.card p {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.card.income { background-color: #ecfdf5; border-left: 5px solid #10b981; }
+.card.income p { color: #059669; }
+
+.card.expense { background-color: #fef2f2; border-left: 5px solid #ef4444; }
+.card.expense p { color: #dc2626; }
+
+.card.balance { background-color: #eff6ff; border-left: 5px solid #3b82f6; }
+.card.balance p { color: #2563eb; }
+
+/* 2. 表示モード切替タブ */
+.filter-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 8px 20px;
+    border: 1px solid #cbd5e1;
+    background-color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #475569;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background-color: #3b82f6;
+    color: #fff;
+    border-color: #3b82f6;
+}
+
+/* 3. メイン2カラムレイアウト */
+.main-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.calendar-area, .input-area {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* カレンダーグリッド */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-header button {
+    padding: 5px 12px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 25px;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.85rem;
+    padding: 8px 0;
+    color: #64748b;
+}
+
+.calendar-day-header.sun { color: #ef4444; }
+.calendar-day-header.sat { color: #3b82f6; }
+
+.calendar-cell {
+    min-height: 75px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 5px;
+    background-color: #fff;
+    font-size: 0.8rem;
+}
+
+.calendar-cell.empty {
+    background-color: #f8fafc;
+    border: none;
+}
+
+.calendar-cell .day-num {
+    font-weight: bold;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.calendar-badge {
+    display: block;
+    font-size: 0.75rem;
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: #fff;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 登録データ一覧 */
+.item-list {
+    list-style: none;
+    margin-top: 10px;
+}
+
+.item-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: #f8fafc;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    gap: 10px;
+}
+
+.btn-edit {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    background-color: #e2e8f0;
+    color: #334155;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+/* フォームスタイル */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #475569;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 10px;
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #2563eb;
+}
+
+.btn-cancel {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: #94a3b8;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.btn-delete {
+    margin-top: 15px;
+    padding: 8px 16px;
+    background-color: #ef4444;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .main-grid, .summary-cards {
+        grid-template-columns: 1fr;
+    }
+}
