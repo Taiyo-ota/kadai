@@ -1,59 +1,133 @@
-
 document.addEventListener("DOMContentLoaded", () => {
-    const monthLabel = document.getElementById("monthLabel");
-    const prevButton = document.getElementById("prevMonth");
-    const nextButton = document.getElementById("nextMonth");
-    const filterSelect = document.getElementById("genreFilter");
 
-    let currentDate = new Date();
+	const monthLabel = document.getElementById("monthLabel");
+	const calendarGrid = document.getElementById("calendarGrid");
 
-    function updateMonth() {
-        if (monthLabel) {
-            monthLabel.textContent =
-                `${currentDate.getFullYear()}年${currentDate.getMonth() + 1}月`;
-        }
-    }
+	const prevButton = document.getElementById("prevMonth");
+	const nextButton = document.getElementById("nextMonth");
+	const filterSelect = document.getElementById("genreFilter");
 
-    if (prevButton) {
-        prevButton.addEventListener("click", () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            updateMonth();
-        });
-    }
+	let currentDate = new Date();
 
-    if (nextButton) {
-        nextButton.addEventListener("click", () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            updateMonth();
-        });
-    }
+	// カレンダーを表示
+	function updateMonth() {
 
-    if (filterSelect) {
-        filterSelect.addEventListener("change", () => {
-            const selectedGenre = filterSelect.value;
+		const year = currentDate.getFullYear();
+		const month = currentDate.getMonth();
 
-            document.querySelectorAll("[data-genre]").forEach((item) => {
-                const genre = item.dataset.genre;
+		if (monthLabel) {
+			monthLabel.textContent = `${year}年${month + 1}月`;
+		}
 
-                item.hidden =
-                    selectedGenre !== "all" &&
-                    selectedGenre !== genre;
-            });
-        });
-    }
+		if (!calendarGrid) {
+			return;
+		}
 
-    const logoutButton = document.getElementById("logoutButton");
+		// 曜日の見出しを残す
+		calendarGrid.innerHTML = `
+            <div class="calendar-day heading">日</div>
+            <div class="calendar-day heading">月</div>
+            <div class="calendar-day heading">火</div>
+            <div class="calendar-day heading">水</div>
+            <div class="calendar-day heading">木</div>
+            <div class="calendar-day heading">金</div>
+            <div class="calendar-day heading">土</div>
+        `;
 
-    if (logoutButton) {
-        logoutButton.addEventListener("click", () => {
-            const confirmed = confirm("ログアウトしますか？");
+		// 月の最初の曜日
+		const firstDay = new Date(year, month, 1).getDay();
 
-            if (confirmed) {
-                // 実際のログアウト処理はSpring Boot側で実装します。
-                alert("ログアウト処理は未接続です。");
-            }
-        });
-    }
+		// 月の日数
+		const lastDate = new Date(year, month + 1, 0).getDate();
 
-    updateMonth();
+		// 月初めの空白
+		for (let i = 0; i < firstDay; i++) {
+
+			const emptyDay = document.createElement("div");
+			emptyDay.className = "calendar-day";
+
+			calendarGrid.appendChild(emptyDay);
+		}
+
+		// 日付を表示
+		for (let day = 1; day <= lastDate; day++) {
+
+			const dayElement = document.createElement("div");
+
+			dayElement.className = "calendar-day";
+			dayElement.textContent = day;
+
+			// 今日の日付を強調
+			const today = new Date();
+
+			if (
+				year === today.getFullYear() &&
+				month === today.getMonth() &&
+				day === today.getDate()
+			) {
+				dayElement.classList.add("today");
+			}
+
+			calendarGrid.appendChild(dayElement);
+		}
+	}
+
+	// 前の月
+	if (prevButton) {
+		prevButton.addEventListener("click", () => {
+
+			currentDate.setDate(1);
+			currentDate.setMonth(currentDate.getMonth() - 1);
+
+			updateMonth();
+		});
+	}
+
+	// 次の月
+	if (nextButton) {
+		nextButton.addEventListener("click", () => {
+
+			currentDate.setDate(1);
+			currentDate.setMonth(currentDate.getMonth() + 1);
+
+			updateMonth();
+		});
+	}
+
+	// ジャンルで絞り込み
+	if (filterSelect) {
+
+		filterSelect.addEventListener("change", () => {
+
+			const selectedGenre = filterSelect.value;
+
+			document.querySelectorAll("[data-genre]").forEach((item) => {
+
+				const genre = item.dataset.genre;
+
+				item.hidden =
+					selectedGenre !== "all" &&
+					selectedGenre !== genre;
+			});
+		});
+	}
+
+	// ログアウト確認
+	const logoutForm = document.getElementById("logoutForm");
+
+	if (logoutForm) {
+
+		logoutForm.addEventListener("submit", (event) => {
+
+			const confirmed = confirm("ログアウトしますか？");
+
+			if (!confirmed) {
+				event.preventDefault();
+			}
+		});
+	}
+
+	// 最初にカレンダーを表示
+	updateMonth();
+
 });

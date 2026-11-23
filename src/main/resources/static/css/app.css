@@ -1,134 +1,412 @@
-
-/* 入力画面 */
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+/* 全体 */
+* {
+	box-sizing: border-box;
 }
 
-.required {
-    color: #d9534f;
-    font-size: 12px;
+body {
+	margin: 0;
+	font-family: "Meiryo", sans-serif;
+	background: #f4f7fb;
+	color: #333;
 }
 
-input[type="color"] {
-    width: 70px;
-    height: 42px;
-    padding: 3px;
+/* ヘッダー */
+header {
+	background: #4169e1;
+	color: white;
+	padding: 20px;
+}
+
+header h1 {
+	margin: 0 0 15px;
+	font-size: 24px;
+}
+
+/* ナビゲーション */
+nav {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 15px;
+}
+
+nav a {
+	color: white;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+nav a:hover {
+	text-decoration: underline;
+}
+
+/* メイン */
+main {
+	max-width: 1200px;
+	margin: 30px auto;
+	padding: 0 15px;
+}
+
+/* カード */
+.card {
+	background: white;
+	padding: 24px;
+	margin-bottom: 24px;
+	border-radius: 12px;
+	box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card h2 {
+	margin-top: 0;
+}
+
+/* 収支 */
+.summary {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 15px;
+}
+
+.summary-item {
+	background: #edf2ff;
+	padding: 20px;
+	border-radius: 10px;
+	text-align: center;
+}
+
+.summary-item strong {
+	display: block;
+	margin-bottom: 10px;
+}
+
+.summary-item p {
+	font-size: 24px;
+	font-weight: bold;
+	margin: 0;
+}
+
+/* カレンダー操作 */
+.calendar-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+
+.calendar-controls h2 {
+	margin: 0;
+	text-align: center;
+}
+
+/* ボタン */
+button {
+	padding: 10px 16px;
+	background: #4169e1;
+	color: white;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+button:hover {
+	background: #3154bd;
 }
 
 /* カレンダー */
 .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 4px;
-    margin-top: 16px;
+	display: grid;
+	grid-template-columns: repeat(7, minmax(0, 1fr));
+	gap: 4px;
+	width: 100%;
 }
 
+/* 日付 */
 .calendar-day {
-    min-height: 70px;
-    padding: 8px 4px;
-    background: #f5f7fb;
-    border-radius: 5px;
-    overflow-wrap: anywhere;
+	min-width: 0;
+	min-height: 100px;
+	padding: 8px;
+	background: #f5f7fb;
+	border: 1px solid #e1e5ee;
+	border-radius: 6px;
+	overflow-wrap: anywhere;
 }
 
+/* 曜日 */
 .calendar-day.heading {
-    min-height: auto;
-    text-align: center;
-    font-weight: bold;
-    background: #edf2ff;
+	min-height: auto;
+	padding: 12px 4px;
+	text-align: center;
+	font-weight: bold;
+	background: #edf2ff;
 }
 
-/* 表の横スクロール */
-.table-scroll {
-    width: 100%;
-    overflow-x: auto;
+/* 日曜日 */
+.calendar-day.heading:first-child {
+	color: #e53935;
 }
 
-.inline-form {
-    display: inline;
+/* 土曜日 */
+.calendar-day.heading:nth-child(7) {
+	color: #1976d2;
 }
 
-.inline-form button {
-    margin: 4px 0;
-}
-
-@media (max-width: 600px) {
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-
-    .calendar-day {
-        min-height: 48px;
-        padding: 5px 2px;
-        font-size: 12px;
-    }
+/* 今日 */
+.calendar-day.today {
+	background: #fff3cd;
+	border: 2px solid #ffc107;
+	font-weight: bold;
 }
 
 /* 入力画面 */
 .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
 }
 
 .required {
-    color: #d9534f;
-    font-size: 12px;
+	color: #d9534f;
+	font-size: 12px;
 }
 
 input[type="color"] {
-    width: 70px;
-    height: 42px;
-    padding: 3px;
+	width: 70px;
+	height: 42px;
+	padding: 3px;
 }
 
-/* カレンダー */
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 4px;
-    margin-top: 16px;
-}
-
-.calendar-day {
-    min-height: 70px;
-    padding: 8px 4px;
-    background: #f5f7fb;
-    border-radius: 5px;
-    overflow-wrap: anywhere;
-}
-
-.calendar-day.heading {
-    min-height: auto;
-    text-align: center;
-    font-weight: bold;
-    background: #edf2ff;
-}
-
-/* 表の横スクロール */
+/* 予定一覧 */
 .table-scroll {
-    width: 100%;
-    overflow-x: auto;
+	width: 100%;
+	overflow-x: auto;
 }
 
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 15px;
+}
+
+th,
+td {
+	padding: 12px;
+	border-bottom: 1px solid #ddd;
+	text-align: left;
+}
+
+th {
+	background: #edf2ff;
+}
+
+tr:hover {
+	background: #f5f7fb;
+}
+
+/* ジャンル選択 */
+select {
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+/* インラインフォーム */
 .inline-form {
-    display: inline;
+	display: inline;
 }
 
 .inline-form button {
-    margin: 4px 0;
+	margin: 4px 0;
 }
 
+/* スマートフォン対応 */
 @media (max-width: 600px) {
-    .form-row {
-        grid-template-columns: 1fr;
-    }
 
-    .calendar-day {
-        min-height: 48px;
-        padding: 5px 2px;
-        font-size: 12px;
-    }
+	header h1 {
+		font-size: 20px;
+	}
+
+	.summary {
+		grid-template-columns: 1fr;
+	}
+
+	.card {
+		padding: 12px;
+	}
+
+	.calendar-day {
+		min-height: 55px;
+		padding: 5px 2px;
+		font-size: 12px;
+	}
+
+	.calendar-controls h2 {
+		font-size: 18px;
+	}
+
+	.calendar-controls button {
+		padding: 8px;
+		font-size: 12px;
+	}
+
+	.form-row {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* =========================
+   予定登録画面
+========================= */
+
+body {
+	background: #f3f6fc;
+	color: #263248;
+	font-family: "Segoe UI", "Yu Gothic", sans-serif;
+}
+
+/* 入力画面全体 */
+main {
+	max-width: 900px;
+	margin: 45px auto;
+	padding: 0 20px;
+}
+
+/* 白いカード */
+main .card {
+	background: #ffffff;
+	padding: 40px;
+	border-radius: 18px;
+	box-shadow: 0 8px 30px rgba(30, 60, 120, 0.08);
+}
+
+/* 見出し */
+main .card h2 {
+	font-size: 25px;
+	margin-bottom: 30px;
+	padding-bottom: 15px;
+	border-bottom: 2px solid #edf1f7;
+}
+
+/* 入力フォーム */
+main .card form {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 22px;
+}
+
+/* 各入力項目 */
+main .card form>div {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-width: 0;
+}
+
+/* 項目名 */
+main .card label {
+	font-weight: 600;
+	font-size: 14px;
+	color: #34415b;
+}
+
+/* 入力欄 */
+main .card input,
+main .card select,
+main .card textarea {
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	padding: 12px 14px;
+	border: 1px solid #d7deeb;
+	border-radius: 10px;
+	background: #fff;
+	font-size: 15px;
+	transition: 0.2s;
+}
+
+/* 入力中 */
+main .card input:focus,
+main .card select:focus,
+main .card textarea:focus {
+	outline: none;
+	border-color: #4169e1;
+	box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.12);
+}
+
+/* メモ欄 */
+main .card textarea {
+	min-height: 110px;
+	resize: vertical;
+}
+
+/* 色選択 */
+main .card input[type="color"] {
+	height: 48px;
+	padding: 5px;
+	cursor: pointer;
+}
+
+/* 登録ボタン */
+main .card button[type="submit"] {
+	background: #4169e1;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	padding: 14px 25px;
+	font-size: 16px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+main .card button[type="submit"]:hover {
+	background: #3155c6;
+	transform: translateY(-2px);
+}
+
+/* 戻るリンク */
+main .card form a {
+	color: #4169e1;
+	text-decoration: none;
+	align-self: center;
+	font-weight: 600;
+}
+
+/* スマホ対応 */
+@media (max-width: 650px) {
+	main {
+		margin: 20px auto;
+		padding: 0 12px;
+	}
+
+	main .card {
+		padding: 24px 18px;
+	}
+
+	main .card form {
+		grid-template-columns: 1fr;
+	}
+}
+/* 予定登録フォームの配置を修正 */
+
+/* フォーム全体は縦並び */
+main .card form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 各項目を縦並び */
+main .card form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 入力欄の幅 */
+main .card form input,
+main .card form select,
+main .card form textarea {
+    width: 100%;
+    box-sizing: border-box;
 }

@@ -1,15 +1,124 @@
-
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>収支の新規登録</title>
+
     <link rel="stylesheet" th:href="@{/css/app.css}">
+
+    <style>
+        .finance-card {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 35px;
+        }
+
+        .finance-card h2 {
+            margin-bottom: 30px;
+        }
+
+        #incomeExpenseForm {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        #incomeExpenseForm .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        #incomeExpenseForm label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        #incomeExpenseForm input,
+        #incomeExpenseForm select,
+        #incomeExpenseForm textarea {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #d7deeb;
+            border-radius: 10px;
+            background: white;
+            font-size: 15px;
+        }
+
+        #incomeExpenseForm input:focus,
+        #incomeExpenseForm select:focus,
+        #incomeExpenseForm textarea:focus {
+            outline: none;
+            border-color: #4169e1;
+            box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.12);
+        }
+
+        #incomeExpenseForm textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        #incomeExpenseForm .full-width {
+            grid-column: 1 / -1;
+        }
+
+        #incomeExpenseForm .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        #incomeExpenseForm .form-actions button {
+            background: #4169e1;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #incomeExpenseForm .form-actions button:hover {
+            background: #3155c6;
+        }
+
+        #incomeExpenseForm .form-actions a {
+            padding: 14px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+        @media (max-width: 650px) {
+            .finance-card {
+                margin: 20px auto;
+                padding: 22px;
+            }
+
+            #incomeExpenseForm {
+                grid-template-columns: 1fr;
+            }
+
+            #incomeExpenseForm .form-actions {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
 <header>
     <h1>収支の新規登録</h1>
+
     <nav>
         <a th:href="@{/main}">ホーム</a>
         <a th:href="@{/schedule/new}">予定を登録</a>
@@ -19,7 +128,9 @@
 </header>
 
 <main>
-    <section class="card">
+
+    <section class="card finance-card">
+
         <h2>収入・支出を入力してください</h2>
 
         <form id="incomeExpenseForm"
@@ -27,43 +138,82 @@
               th:object="${incomeExpenseForm}"
               method="post">
 
-            <label for="type">区分 <span class="required">必須</span></label>
-            <select id="type" th:field="*{type}" required>
-                <option value="">選択してください</option>
-                <option value="income">収入</option>
-                <option value="expense">支出</option>
-            </select>
+            <div class="form-group">
+                <label for="type">
+                    区分 <span class="required">必須</span>
+                </label>
 
-            <label for="amount">金額（円） <span class="required">必須</span></label>
-            <input id="amount" type="number" th:field="*{amount}"
-                   min="1" step="1" placeholder="例：5000" required>
+                <select id="type" th:field="*{type}" required>
+                    <option value="">選択してください</option>
+                    <option value="income">収入</option>
+                    <option value="expense">支出</option>
+                </select>
+            </div>
 
-            <label for="date">日付 <span class="required">必須</span></label>
-            <input id="date" type="date" th:field="*{date}" required>
+            <div class="form-group">
+                <label for="amount">
+                    金額（円） <span class="required">必須</span>
+                </label>
 
-            <label for="category">項目 <span class="required">必須</span></label>
-            <select id="category" th:field="*{category}" required>
-                <option value="">選択してください</option>
-                <option value="アルバイト代">アルバイト代</option>
-                <option value="食費">食費</option>
-                <option value="交通費">交通費</option>
-                <option value="学用品">学用品</option>
-                <option value="娯楽費">娯楽費</option>
-                <option value="その他">その他</option>
-            </select>
+                <input id="amount"
+                       type="number"
+                       th:field="*{amount}"
+                       min="1"
+                       step="1"
+                       placeholder="例：5000"
+                       required>
+            </div>
 
-            <label for="memo">メモ</label>
-            <textarea id="memo" th:field="*{memo}"
-                      maxlength="500" placeholder="例：飲食店での昼食代"></textarea>
+            <div class="form-group">
+                <label for="date">
+                    日付 <span class="required">必須</span>
+                </label>
+
+                <input id="date"
+                       type="date"
+                       th:field="*{date}"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">
+                    項目 <span class="required">必須</span>
+                </label>
+
+                <select id="category" th:field="*{category}" required>
+                    <option value="">選択してください</option>
+                    <option value="アルバイト代">アルバイト代</option>
+                    <option value="食費">食費</option>
+                    <option value="交通費">交通費</option>
+                    <option value="学用品">学用品</option>
+                    <option value="娯楽費">娯楽費</option>
+                    <option value="その他">その他</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="memo">メモ</label>
+
+                <textarea id="memo"
+                          th:field="*{memo}"
+                          maxlength="500"
+                          placeholder="例：飲食店での昼食代"></textarea>
+            </div>
 
             <div class="form-actions">
                 <button type="submit">収支を登録する</button>
-                <a class="button button-secondary" th:href="@{/main}">戻る</a>
+
+                <a class="button button-secondary"
+                   th:href="@{/main}">戻る</a>
             </div>
+
         </form>
+
     </section>
+
 </main>
 
 <script th:src="@{/js/income-expense-form.js}"></script>
+
 </body>
 </html>

@@ -1,76 +1,196 @@
-
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>予定の新規登録</title>
-    <link rel="stylesheet" th:href="@{/css/app.css}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>予定の新規登録</title>
+	<link rel="stylesheet" th:href="@{/css/app.css}">
+
+	<style>
+		.schedule-card {
+			max-width: 850px;
+			margin: 40px auto;
+			padding: 35px;
+		}
+
+		.schedule-card h2 {
+			margin-bottom: 30px;
+		}
+
+		#scheduleForm {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 24px;
+		}
+
+		#scheduleForm .form-group {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			min-width: 0;
+		}
+
+		#scheduleForm label {
+			font-weight: 600;
+			font-size: 14px;
+		}
+
+		#scheduleForm input,
+		#scheduleForm select,
+		#scheduleForm textarea {
+			width: 100%;
+			min-width: 0;
+			box-sizing: border-box;
+			padding: 12px;
+			border: 1px solid #d7deeb;
+			border-radius: 10px;
+			background: white;
+			font-size: 15px;
+		}
+
+		#scheduleForm input:focus,
+		#scheduleForm select:focus,
+		#scheduleForm textarea:focus {
+			outline: none;
+			border-color: #4169e1;
+			box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.12);
+		}
+
+		#scheduleForm input[type="color"] {
+			height: 48px;
+			padding: 5px;
+			cursor: pointer;
+		}
+
+		#scheduleForm textarea {
+			min-height: 120px;
+			resize: vertical;
+		}
+
+		#scheduleForm .full-width {
+			grid-column: 1 / -1;
+		}
+
+		#scheduleForm .form-actions {
+			grid-column: 1 / -1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 15px;
+			margin-top: 10px;
+		}
+
+		#scheduleForm .form-actions button {
+			background: #4169e1;
+			color: white;
+			border: none;
+			padding: 14px 28px;
+			border-radius: 10px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		#scheduleForm .form-actions button:hover {
+			background: #3155c6;
+		}
+
+		#scheduleForm .form-actions a {
+			padding: 14px 28px;
+			border-radius: 10px;
+			text-decoration: none;
+		}
+
+		@media (max-width: 650px) {
+			.schedule-card {
+				margin: 20px auto;
+				padding: 22px;
+			}
+
+			#scheduleForm {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
 </head>
+
 <body>
-<header>
-    <h1>予定の新規登録</h1>
-    <nav>
-        <a th:href="@{/main}">ホーム</a>
-        <a th:href="@{/schedule/new}">予定を登録</a>
-        <a th:href="@{/income-expense/new}">収支を登録</a>
-        <a th:href="@{/records}">編集・削除</a>
-    </nav>
-</header>
 
-<main>
-    <section class="card">
-        <h2>予定情報を入力してください</h2>
+	<header>
+		<h1>予定の新規登録</h1>
 
-        <form id="scheduleForm"
-              th:action="@{/schedule/save}"
-              th:object="${scheduleForm}"
-              method="post">
+		<nav>
+			<a th:href="@{/main}">ホーム</a>
+			<a th:href="@{/schedule/new}">予定を登録</a>
+			<a th:href="@{/income-expense/new}">収支を登録</a>
+			<a th:href="@{/records}">編集・削除</a>
+		</nav>
+	</header>
 
-            <label for="title">予定名 <span class="required">必須</span></label>
-            <input id="title" type="text" th:field="*{title}"
-                   maxlength="100" placeholder="例：学校の授業" required>
+	<main>
+		<section class="card schedule-card">
 
-            <label for="date">日付 <span class="required">必須</span></label>
-            <input id="date" type="date" th:field="*{date}" required>
+			<h2>予定情報を入力してください</h2>
 
-            <div class="form-row">
-                <div>
-                    <label for="startTime">開始時刻</label>
-                    <input id="startTime" type="time"
-                           th:field="*{startTime}" required>
-                </div>
-                <div>
-                    <label for="endTime">終了時刻</label>
-                    <input id="endTime" type="time"
-                           th:field="*{endTime}" required>
-                </div>
-            </div>
+			<form id="scheduleForm" th:action="@{/schedule/new}" th:object="${scheduleForm}" method="post">
 
-            <label for="genre">ジャンル</label>
-            <select id="genre" th:field="*{genre}" required>
-                <option value="">選択してください</option>
-                <option value="学校">学校</option>
-                <option value="アルバイト">アルバイト</option>
-                <option value="プライベート">プライベート</option>
-                <option value="その他">その他</option>
-            </select>
+				<div class="form-group">
+					<label for="title">
+						予定名 <span class="required">必須</span>
+					</label>
+					<input id="title" type="text" th:field="*{title}" maxlength="100" placeholder="例：学校の授業" required>
+				</div>
 
-            <label for="color">予定の色</label>
-            <input id="color" type="color" th:field="*{color}" value="#4f75c2">
+				<div class="form-group">
+					<label for="date">
+						日付 <span class="required">必須</span>
+					</label>
+					<input id="date" type="date" th:field="*{date}" required>
+				</div>
 
-            <label for="memo">メモ</label>
-            <textarea id="memo" th:field="*{memo}"
-                      maxlength="500" placeholder="予定の詳細を入力"></textarea>
+				<div class="form-group">
+					<label for="startTime">開始時刻</label>
+					<input id="startTime" type="time" th:field="*{startTime}">
+				</div>
 
-            <div class="form-actions">
-                <button type="submit">予定を登録する</button>
-                <a class="button button-secondary" th:href="@{/main}">戻る</a>
-            </div>
-        </form>
-    </section>
-</main>
+				<div class="form-group">
+					<label for="endTime">終了時刻</label>
+					<input id="endTime" type="time" th:field="*{endTime}">
+				</div>
 
-<script th:src="@{/js/schedule-form.js}"></script>
+				<div class="form-group">
+					<label for="genre">ジャンル</label>
+					<select id="genre" th:field="*{genre}" required>
+						<option value="">選択してください</option>
+						<option value="学校">学校</option>
+						<option value="アルバイト">アルバイト</option>
+						<option value="プライベート">プライベート</option>
+						<option value="その他">その他</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="color">予定の色</label>
+					<input id="color" type="color" th:field="*{color}">
+				</div>
+
+				<div class="form-group full-width">
+					<label for="memo">メモ</label>
+					<textarea id="memo" th:field="*{memo}" maxlength="500" placeholder="予定の詳細を入力"></textarea>
+				</div>
+
+				<div class="form-actions">
+					<button type="submit">予定を登録する</button>
+					<a class="button button-secondary" th:href="@{/main}">戻る</a>
+				</div>
+
+			</form>
+
+		</section>
+	</main>
+
+	<script th:src="@{/js/schedule-form.js}"></script>
+
 </body>
+
 </html>

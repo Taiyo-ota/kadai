@@ -1,10 +1,255 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>初期設定画面</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>初期設定画面</title>
+
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			background: #f3f6fc;
+			font-family: "Segoe UI", "Yu Gothic", sans-serif;
+			color: #263248;
+		}
+
+		header {
+			background: #4169e1;
+			color: white;
+			padding: 22px;
+			text-align: center;
+			font-size: 24px;
+			font-weight: bold;
+		}
+
+		.container {
+			max-width: 650px;
+			margin: 45px auto;
+			padding: 0 20px;
+		}
+
+		.card {
+			background: white;
+			padding: 35px;
+			border-radius: 18px;
+			box-shadow: 0 8px 30px rgba(30, 60, 120, 0.08);
+		}
+
+		h2 {
+			margin-top: 0;
+			font-size: 23px;
+		}
+
+		.description {
+			color: #6b7280;
+			margin-bottom: 30px;
+		}
+
+		.form-group {
+			margin-bottom: 22px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 8px;
+			font-weight: bold;
+			font-size: 14px;
+		}
+
+		input,
+		select {
+			width: 100%;
+			padding: 12px;
+			border: 1px solid #d7deeb;
+			border-radius: 10px;
+			font-size: 15px;
+		}
+
+		input:focus,
+		select:focus {
+			outline: none;
+			border-color: #4169e1;
+		}
+
+		input[type="color"] {
+			height: 55px;
+			padding: 5px;
+			cursor: pointer;
+		}
+
+		.button {
+			width: 100%;
+			padding: 14px;
+			border: none;
+			border-radius: 10px;
+			background: #4169e1;
+			color: white;
+			font-size: 16px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.button:hover {
+			background: #3155c6;
+		}
+
+		.category-list {
+			margin-top: 35px;
+			border-top: 1px solid #e5e7eb;
+			padding-top: 25px;
+		}
+
+		.category-item {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			padding: 13px;
+			background: #f8fafc;
+			border-radius: 10px;
+			margin-bottom: 10px;
+		}
+
+		.color-circle {
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			flex-shrink: 0;
+		}
+
+		.complete-button {
+			display: block;
+			text-align: center;
+			margin-top: 30px;
+			padding: 14px;
+			background: #16a34a;
+			color: white;
+			text-decoration: none;
+			border-radius: 10px;
+			font-weight: bold;
+		}
+
+		.complete-button:hover {
+			background: #15803d;
+		}
+
+		@media (max-width: 600px) {
+			.container {
+				margin: 20px auto;
+			}
+
+			.card {
+				padding: 24px 18px;
+			}
+		}
+	</style>
 </head>
+
 <body>
 
+	<header>初期設定</header>
+
+	<div class="container">
+		<div class="card">
+
+			<h2>ジャンル・色の設定</h2>
+
+			<p class="description">
+				カレンダーで使用するジャンルと色を設定してください。
+			</p>
+
+			<form id="categoryForm">
+
+				<div class="form-group">
+					<label for="categoryName">ジャンル名</label>
+					<input type="text" id="categoryName" placeholder="例：学校、アルバイト、趣味" maxlength="50" required>
+				</div>
+
+				<div class="form-group">
+					<label for="categoryType">種類</label>
+					<select id="categoryType">
+						<option value="schedule">予定</option>
+						<option value="income">収入</option>
+						<option value="expense">支出</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="categoryColor">色を選択</label>
+					<input type="color" id="categoryColor" value="#4169e1">
+				</div>
+
+				<button type="submit" class="button">
+					＋ ジャンルを追加
+				</button>
+
+			</form>
+
+			<div class="category-list">
+
+				<h3>登録済みジャンル</h3>
+
+				<div id="categoryItems">
+					<p id="emptyMessage">まだジャンルが登録されていません。</p>
+				</div>
+
+			</div>
+
+			<a th:href="@{/main}" href="/main" class="complete-button">
+				設定を完了する
+			</a>
+
+		</div>
+	</div>
+
+	<script>
+		const categoryForm = document.getElementById("categoryForm");
+		const categoryItems = document.getElementById("categoryItems");
+		const emptyMessage = document.getElementById("emptyMessage");
+
+		categoryForm.addEventListener("submit", function (event) {
+			event.preventDefault();
+
+			const name = document.getElementById("categoryName").value.trim();
+			const type = document.getElementById("categoryType").value;
+			const color = document.getElementById("categoryColor").value;
+
+			if (!name) {
+				return;
+			}
+
+			if (emptyMessage) {
+				emptyMessage.remove();
+			}
+
+			const item = document.createElement("div");
+			item.className = "category-item";
+
+			const circle = document.createElement("span");
+			circle.className = "color-circle";
+			circle.style.backgroundColor = color;
+
+			const text = document.createElement("span");
+			const typeNames = {
+				schedule: "予定",
+				income: "収入",
+				expense: "支出"
+			};
+
+			text.textContent = name + "（" + typeNames[type] + "）";
+
+			item.appendChild(circle);
+			item.appendChild(text);
+			categoryItems.appendChild(item);
+
+			categoryForm.reset();
+		});
+	</script>
+
 </body>
+
 </html>

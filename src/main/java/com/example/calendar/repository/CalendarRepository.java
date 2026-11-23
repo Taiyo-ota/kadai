@@ -1,5 +1,10 @@
 package com.example.calendar.repository;
 
-public interface CalendarRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.calendar.entity.Calendar;
+
+public interface CalendarRepository
+        extends JpaRepository<Calendar, Long> {
 
 }
