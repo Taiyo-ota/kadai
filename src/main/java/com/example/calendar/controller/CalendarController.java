@@ -16,28 +16,12 @@ import com.example.calendar.service.CalendarService;
 
 import lombok.RequiredArgsConstructor;
 
-@Controller
-@RequiredArgsConstructor
-=======
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.calendar.entity.Calendar;
-import com.example.calendar.form.CalendarForm;
-import com.example.calendar.service.CalendarService;
 
 @Controller
 @RequestMapping("/calendar")
->>>>>>> branch 'main' of https://github.com/Taiyo-ota/kadai.git
 public class CalendarController {
 
-<<<<<<< HEAD
     private final CalendarService calendarService;
 
     @GetMapping("/main")
@@ -95,7 +79,7 @@ public class CalendarController {
         calendarService.save(calendar);
 
         return "redirect:/main";
-=======
+
     @Autowired
     private CalendarService service;
 
@@ -127,6 +111,6 @@ public class CalendarController {
     public String deleteItem(@PathVariable("id") Integer id) {
         service.delete(id);
         return "redirect:/calendar"; // 削除後、メイン画面に戻る
->>>>>>> branch 'main' of https://github.com/Taiyo-ota/kadai.git
+
     }
 }
