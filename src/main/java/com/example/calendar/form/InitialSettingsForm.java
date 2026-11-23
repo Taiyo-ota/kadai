@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +14,9 @@ import lombok.Setter;
 @Setter
 public class InitialSettingsForm {
 //Categories
-	// ジャンル・色の一覧
+	// ジャンル・色（初期設定画面）
 	@Valid
+	@NotEmpty(message = "ジャンルを1つ以上登録してください")
 	private List<CategoryForm> categories = new ArrayList<>();
 
 	// ジャンル・色の入力情報

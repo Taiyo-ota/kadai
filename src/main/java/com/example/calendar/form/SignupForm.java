@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SignupForm {
-	//users
+	//users(新規作成)
 
 	private String id;
 	// ユーザー名
