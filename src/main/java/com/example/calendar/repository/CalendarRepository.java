@@ -1,6 +1,6 @@
 package com.example.calendar.repository;
 
-<<<<<<< HEAD
+
 import org.springframework.data.jpa.repository.JpaRepository;
 =======
 import java.util.List;
@@ -24,5 +24,5 @@ public interface CalendarRepository extends JpaRepository<Calendar, Integer> {
     
     // 予定のみ・収支のみで絞り込むメソッド
     List<Calendar> findByType(String type);
->>>>>>> branch 'main' of https://github.com/Taiyo-ota/kadai.git
+
 }

@@ -21,10 +21,10 @@ import com.example.calendar.form.CalendarForm;
 import com.example.calendar.repository.CalendarRepository;
 
 @Service
->>>>>>> branch 'main' of https://github.com/Taiyo-ota/kadai.git
+
 public class CalendarService {
 
-<<<<<<< HEAD
+
     private final CalendarRepository calendarRepository;
 
     // 予定をすべて取得
@@ -40,7 +40,6 @@ public class CalendarService {
     // 予定を削除
     public void delete(Long id) {
         calendarRepository.deleteById(id);
-=======
     @Autowired
     private CalendarRepository repository;
 
@@ -79,6 +78,6 @@ public class CalendarService {
     // 削除処理
     public void delete(Integer id) {
         repository.deleteById(id);
->>>>>>> branch 'main' of https://github.com/Taiyo-ota/kadai.git
+
     }
 }
